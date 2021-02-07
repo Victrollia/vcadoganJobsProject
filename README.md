@@ -1,9 +1,9 @@
 ### vcadoganJobsProject
 
-####Student: *Victoria Cadogan*
+#### Student: *Victoria Cadogan*
 
-#College Data :mortar_board:
-##COMP490 Project 1 Sprint 1
+# College Data :mortar_board:
+## COMP490 Project 1 Sprint 1
 
 
 - :running: Open the project (preferably) in PyCharm and run main.py
