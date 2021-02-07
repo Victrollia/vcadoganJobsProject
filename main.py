@@ -45,6 +45,7 @@ def main():
                + repr(data["2016.repayment.3_yr_repayment.overall"])
         f.write("".join(str1) + "\n\t" + "".join(str2) + "\n\t" + "".join(str3) + "\n\t"
                 + "".join(str4) + "\n\t" + "".join(str5) + "\n\n")
+        f.close()
 
 
 if __name__ == '__main__':
