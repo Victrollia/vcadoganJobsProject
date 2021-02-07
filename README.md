@@ -11,4 +11,4 @@
 - :hourglass: Wait 1~2 minutes to run (running time may vary)
 - :memo: A new text file will be created containing US College Data
 
--for *Sprint 1* nothing I believe is missing
+- :pray: for *Sprint 1* nothing I believe is missing
