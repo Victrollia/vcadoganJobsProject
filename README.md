@@ -6,7 +6,11 @@
 ## COMP490 Project 1 Sprint 1
 
 
-- :running: Open the project (preferably) in PyCharm and run main.py
+- :computer: Open the project (preferably) in PyCharm
+- :bookmark_tabs: Register for an API key to get government data: https://api.data.gov/signup/
+- :key: Save the key to a file named secrets.py
+- :heavy_check_mark: Add requests library to the project
+- :running: Run main.py
 - :mag: It will be gathering over 3K entries
 - :hourglass: Wait 1~2 minutes to run (running time may vary)
 - :memo: A new text file will be created containing US College Data
