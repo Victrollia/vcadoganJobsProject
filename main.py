@@ -1,6 +1,7 @@
 import requests
 import secrets
 import math
+import psycopg2 as pg2
 
 
 def school_data(url: str):
@@ -33,19 +34,38 @@ def main():
     url = 'https://api.data.gov/ed/collegescorecard/v1/schools.json?' \
           'school.degrees_awarded.predominant=2,3'
     all_data = school_data(url)
-    f = open("schools.txt", "w")
-    data: object
-    for i, data in enumerate(all_data):
-        str1 = (repr(i+1) + ") " + data['school.name'], " in ", data['school.city'] + ", " + data['school.state'])
-        str2 = "Student Size in 2018: " + repr(data['2018.student.size'])
-        str3 = "Student Size in 2017: " + repr(data['2017.student.size'])
-        str4 = "Grads who earned > 150% of the poverty threshold after 3 years: " \
-               + repr(data["2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line"])
-        str5 = "No. of students in the 3-year repayment rate cohort in 2016: " \
-               + repr(data["2016.repayment.3_yr_repayment.overall"])
-        f.write("".join(str1) + "\n\t" + "".join(str2) + "\n\t" + "".join(str3) + "\n\t"
-                + "".join(str4) + "\n\t" + "".join(str5) + "\n\n")
-    f.close()
+    try:
+        #modify the user and password fields if your server has a different config
+        conn = pg2.connect(database='college', user='postgres', password='password')
+        cur = conn.cursor()
+        query1 = '''
+                CREATE TABLE college_data (
+                    id SERIAL PRIMARY KEY
+                    , name varchar(250)
+                    , city varchar(100)
+                    , state varchar(5)
+                    , size_2019 integer
+                    , size_2018 integer
+                    , earning_grads integer
+                    , grads_repay_3yrs integer
+                );
+                '''
+        cur.execute(query1)
+        conn.commit()
+        query1 = '''
+                    INSERT INTO college_data(name,city,state,size_2019,size_2018,earning_grads,grads_repay_3yrs)
+                    VALUES(%s,%s,%s,%s,%s,%s,%s);
+                    '''
+        for i, data in enumerate(all_data):
+            cur.execute(query1, (data['school.name'], data['school.city'], data['school.state'], data['2018.student.size'],
+                                 data['2017.student.size'], data["2017.earnings.3_yrs_after_completion."
+                                                                 "overall_count_over_poverty_line"],
+                                 data["2016.repayment.3_yr_repayment.overall"]))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("Can't connect. Invalid dbname, user or password")
+        print(e)
 
 
 if __name__ == '__main__':
