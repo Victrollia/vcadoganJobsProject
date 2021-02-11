@@ -35,7 +35,7 @@ def main():
           'school.degrees_awarded.predominant=2,3'
     all_data = school_data(url)
     try:
-        #modify the user and password fields if your server has a different config
+        # modify the user and password fields if your server has a different config
         conn = pg2.connect(database='college', user='postgres', password='password')
         cur = conn.cursor()
         query1 = '''
