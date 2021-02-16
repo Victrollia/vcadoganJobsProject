@@ -41,7 +41,7 @@ def main():
         query1 = '''
                 CREATE TABLE college_data (
                     id SERIAL PRIMARY KEY
-                    , name varchar(250)
+                    , name varchar(250) NOT NULL
                     , city varchar(100)
                     , state varchar(5)
                     , size_2019 integer
