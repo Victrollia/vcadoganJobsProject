@@ -7,7 +7,6 @@ from typing import Tuple
 
 
 def school_data(url: str):
-    c_list = []
     all_data = []
     index = 1
     for page in range(total_pages(url)):
