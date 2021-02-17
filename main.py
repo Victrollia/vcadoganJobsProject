@@ -2,7 +2,6 @@ import requests
 import secrets
 import math
 import sqlite3
-from sqlite3 import Error
 from typing import Tuple
 
 
