@@ -28,7 +28,7 @@
 - Once it finished executing, in the project directory a new database with college data will be created.
 - Database layout: one table, 8 columns, 3203 rows
 - Table layout: 
-    - ID (primary key) that also keep track of the number of entries 
+    - ID (primary key) that also keeps track of the number of entries 
     - College name 
     - City of that college 
     - State of that college
