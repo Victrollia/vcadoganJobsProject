@@ -32,9 +32,9 @@
     - College name 
     - City of that college 
     - State of that college
-    - Student size in 2019 
     - Student size in 2018 
-    - Number of graduates working and not enrolled who earned more than 150% of the single-person household poverty threshold 3 years after completing
-    - Number of students in the 3-year repayment rate cohort
+    - Student size in 2017 
+    - Number of graduates in 2017 working and not enrolled who earned more than 150% of the single-person household poverty threshold 3 years after completing
+    - Number of students in 2016 in the 3-year repayment rate cohort
 
 - :pray: For *Sprint 2* nothing I believe is missing
