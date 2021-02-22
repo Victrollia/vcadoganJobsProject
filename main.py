@@ -78,6 +78,7 @@ def add_data(cursor: sqlite3.Cursor):
 
 
 def main():
+    # test comment
     conn, cursor = create_connection('college_data.sqlite')
     create_tables(cursor)
     add_data(cursor)
