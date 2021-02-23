@@ -19,14 +19,22 @@
 
 ## COMP490 Project 1 Sprint 2
 
-- Use the following command from the terminal: pip install psycopg2
-- Log in to the PostgreSQL database server using any client tool such as pgAdmin or psql
-- In PostgreSQL database server create a new database by entering this query: CREATE DATABASE college;
 - :bookmark_tabs: Register for an API key to get government data: https://api.data.gov/signup/
 - :key: Save the key to a file named secrets.py
 - :computer: Open the project (preferably) in PyCharm
-- Import the necessary packages such as psycopg2
 - :running: Run main.py
 - :mag: It will be gathering over 3K entries
 - :hourglass: Wait 1~2 minutes to run (running time may vary)
-- Once it finished executing, refresh the database, a new table with data should be created.
+- Once it finished executing, in the project directory a new database with college data will be created.
+- Database layout: one table, 8 columns, 3203 rows
+- Table layout: 
+    - ID (primary key) that also keeps track of the number of entries 
+    - College name 
+    - City of that college 
+    - State of that college
+    - Student size in 2018 
+    - Student size in 2017 
+    - Number of graduates in 2017 working and not enrolled who earned more than 150% of the single-person household poverty threshold 3 years after completing
+    - Number of students in 2016 in the 3-year repayment rate cohort
+
+- :pray: For *Sprint 2* nothing I believe is missing

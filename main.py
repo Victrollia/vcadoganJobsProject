@@ -119,6 +119,7 @@ def jobs_data():
 
 
 def main():
+    # test comment
     conn, cursor = create_connection('college_data.sqlite')
     create_college_table(cursor)
     create_jobs_table(cursor)
