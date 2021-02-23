@@ -13,8 +13,8 @@ def test_num_entries():
 def test_database():
     conn = sqlite3.connect('test.sqlite')
     cursor = conn.cursor()
-    main.create_tables(cursor)
-    main.add_data(cursor)
+    main.create_college_table(cursor)
+    main.add_school_data(cursor)
     main.close_db(conn)
     main.main()
     db1 = 'test.sqlite'

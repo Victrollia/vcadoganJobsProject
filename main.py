@@ -2,6 +2,8 @@ import requests
 import secrets
 import math
 import sqlite3
+import pandas as pd
+import os
 from typing import Tuple
 
 
@@ -49,7 +51,7 @@ def close_db(connection: sqlite3.Connection):
     connection.close()
 
 
-def create_tables(cursor: sqlite3.Cursor):
+def create_college_table(cursor: sqlite3.Cursor):
     query1 = '''
                     CREATE TABLE IF NOT EXISTS college_data (
                         id INTEGER PRIMARY KEY
@@ -65,7 +67,23 @@ def create_tables(cursor: sqlite3.Cursor):
     cursor.execute(query1)
 
 
-def add_data(cursor: sqlite3.Cursor):
+def create_jobs_table(cursor: sqlite3.Cursor):
+    query1 = '''
+                    CREATE TABLE IF NOT EXISTS jobs_data (
+                        job_id INTEGER
+                        , area_title TEXT
+                        , o_group TEXT NOT NULL
+                        , occ_title TEXT NOT NULL
+                        , tot_emp INTEGER
+                        , h_pct25 NUMERIC
+                        , a_pct25 NUMERIC
+                        , PRIMARY KEY (job_id, area_title)
+                    );
+                    '''
+    cursor.execute(query1)
+
+
+def add_school_data(cursor: sqlite3.Cursor):
     url = 'https://api.data.gov/ed/collegescorecard/v1/schools.json?' \
           'school.degrees_awarded.predominant=2,3'
     all_data = school_data(url)
@@ -77,10 +95,35 @@ def add_data(cursor: sqlite3.Cursor):
         print(e)
 
 
+def add_jobs_data(cursor: sqlite3.Cursor):
+    all_data = jobs_data()
+    try:
+        for data in all_data:
+            cursor.execute('''INSERT INTO jobs_data(job_id, area_title, o_group, occ_title, tot_emp, h_pct25, a_pct25)
+                        VALUES(?,?,?,?,?,?,?)''', data)
+    except Exception as e:
+        print(e)
+
+
+def jobs_data():
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    file_to_open = os.path.join(this_folder, "state_M2019_dl.xlsx")
+    wb = pd.read_excel(file_to_open, sheet_name='State_M2019_dl', index_col=0)
+    df = pd.DataFrame(wb)
+    data = df[['occ_code', 'area_title', 'o_group', 'occ_title', 'tot_emp', 'h_pct25', 'a_pct25']].query(
+        'o_group == "major"')
+    all_data = []
+    for i in range(len(data)):
+        all_data.append(data.iloc[i].values.tolist())
+    return all_data
+
+
 def main():
     conn, cursor = create_connection('college_data.sqlite')
-    create_tables(cursor)
-    add_data(cursor)
+    create_college_table(cursor)
+    create_jobs_table(cursor)
+    add_school_data(cursor)
+    add_jobs_data(cursor)
     close_db(conn)
 
 
