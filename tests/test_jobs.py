@@ -65,6 +65,3 @@ def test_num_states():
     conn.close()
     assert query >= 50
 
-
-
-
