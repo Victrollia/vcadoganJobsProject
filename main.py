@@ -121,9 +121,9 @@ def jobs_data():
 def main():
     conn, cursor = create_connection('college_data.sqlite')
     create_college_table(cursor)
-    # create_jobs_table(cursor)
+    create_jobs_table(cursor)
     add_school_data(cursor)
-    # add_jobs_data(cursor)
+    add_jobs_data(cursor)
     close_db(conn)
 
 
