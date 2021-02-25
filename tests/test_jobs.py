@@ -64,4 +64,3 @@ def test_num_states():
     query = cursor.fetchone()[0]
     conn.close()
     assert query >= 50
-
