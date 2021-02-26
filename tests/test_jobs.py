@@ -17,8 +17,6 @@ def test_funcs(db1='test.sqlite', db2='college_data.sqlite'):
     main.create_jobs_table(cur1)
     main.add_school_data(cur1)
     main.add_jobs_data(cur1)
-    entry_num(db1, db2, "college_data")
-    entry_num(db1, db2, "jobs_data")
     main.close_db(conn1)
     main.close_db(conn2)
 
@@ -27,8 +25,12 @@ def test_database():
     main.main()
     sql1 = """SELECT * FROM college_data LIMIT 5;"""
     sql2 = """SELECT * FROM jobs_data LIMIT 5"""
-    row_comparison('test.sqlite', 'college_data.sqlite', sql1, 'College_Data')
-    row_comparison('test.sqlite', 'college_data.sqlite', sql2, 'Jobs_Data')
+    db1 = 'test.sqlite'
+    db2 = 'college_data.sqlite'
+    row_comparison(db1, db2, sql1, 'College_Data')
+    row_comparison(db1, db2, sql2, 'Jobs_Data')
+    entry_num(db1, db2, "college_data;")
+    entry_num(db1, db2, "jobs_data;")
 
 
 def row_comparison(db1, db2, query, table_name):
