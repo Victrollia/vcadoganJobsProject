@@ -10,21 +10,33 @@ def test_num_entries():
     assert result > 1000
 
 
-def test_database():
-    main.main()
-    db1 = 'test.sqlite'
-    db2 = 'college_data.sqlite'
-    conn1 = sqlite3.connect(db1)
-    conn2 = sqlite3.connect(db2)
-    cur1 = conn1.cursor()
-    cur2 = conn2.cursor()
+def test_funcs(db1='test.sqlite', db2='college_data.sqlite'):
+    conn1, cur1 = main.create_connection(db1)
+    conn2, cur2 = main.create_connection(db2)
     main.create_college_table(cur1)
     main.create_jobs_table(cur1)
     main.add_school_data(cur1)
     main.add_jobs_data(cur1)
-    res1 = cur1.execute("""SELECT * FROM college_data""")
-    res2 = cur2.execute("""SELECT * FROM college_data""")
-    print("...Comparing Table: School_Data")
+    entry_num(db1, db2, "college_data")
+    entry_num(db1, db2, "jobs_data")
+    main.close_db(conn1)
+    main.close_db(conn2)
+
+
+def test_database():
+    main.main()
+    sql1 = """SELECT * FROM college_data LIMIT 5;"""
+    sql2 = """SELECT * FROM jobs_data LIMIT 5"""
+    row_comparison('test.sqlite', 'college_data.sqlite', sql1, 'College_Data')
+    row_comparison('test.sqlite', 'college_data.sqlite', sql2, 'Jobs_Data')
+
+
+def row_comparison(db1, db2, query, table_name):
+    conn1, cur1 = main.create_connection(db1)
+    conn2, cur2 = main.create_connection(db2)
+    res1 = cur1.execute(query)
+    res2 = cur2.execute(query)
+    print("...Comparing Table: " + table_name)
     for row1 in res1:
         row2 = res2.fetchone()
         print(row1)
@@ -40,21 +52,23 @@ def test_database():
                 print("!!!!!!!!PROBLEM " + db2 + " is missing Table:" + str(row2[0]))
                 assert False
             exit()
-    print("...Comparison for College_Data is complete: all tables match")
-    print("...Comparing Table: Jobs_Data")
-    res3 = cur1.execute("""SELECT * FROM jobs_data""")
-    res4 = cur2.execute("""SELECT * FROM jobs_data""")
-    for row3 in res3:
-        row4 = res4.fetchone()
-        if row3 is not None and row4 is not None and (row3[0] == row4[0]):
-            assert True
-        else:
-            assert False
-            exit()
-    print("....Done comparing table presence")
-    print("....All tables match")
+    print("...Completed table comparison for " + table_name + ": all tables match")
     main.close_db(conn1)
     main.close_db(conn2)
+
+
+def entry_num(db1, db2, table_name):
+    result1 = exec_sql(db1, table_name)
+    result2 = exec_sql(db2, table_name)
+    assert result1 == result2
+
+
+def exec_sql(filename, table_name):
+    conn, cursor = main.create_connection(filename)
+    cursor.execute("SELECT COUNT(*) FROM " + table_name)
+    query = cursor.fetchone()[0]
+    main.close_db(conn)
+    return query
 
 
 def test_num_states():

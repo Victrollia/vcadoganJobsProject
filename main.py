@@ -3,7 +3,6 @@ import secrets
 import math
 import sqlite3
 import pandas as pd
-from pandas.tests.io.excel.test_openpyxl import openpyxl
 import os
 from typing import Tuple
 
@@ -42,7 +41,7 @@ def total_pages(url: str):
 
 
 def create_connection(filename: str) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
-    conn = sqlite3.connect('college_data.sqlite')
+    conn = sqlite3.connect(filename)
     cursor = conn.cursor()
     return conn, cursor
 
@@ -109,7 +108,7 @@ def add_jobs_data(cursor: sqlite3.Cursor):
 def jobs_data():
     this_folder = os.path.dirname(os.path.abspath(__file__))
     file_to_open = os.path.join(this_folder, "state_M2019_dl.xlsx")
-    wb = pd.read_excel(file_to_open, sheet_name='State_M2019_dl', index_col=0, engine=openpyxl)
+    wb = pd.read_excel(file_to_open, sheet_name='State_M2019_dl', index_col=0)
     df = pd.DataFrame(wb)
     data = df[['occ_code', 'area_title', 'o_group', 'occ_title', 'tot_emp', 'h_pct25', 'a_pct25']].query(
         'o_group == "major"')
