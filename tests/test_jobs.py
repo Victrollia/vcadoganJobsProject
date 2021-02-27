@@ -11,16 +11,14 @@ def test_num_entries():
     assert result > 1000
 
 
-def test_funcs(db1='test.sqlite', db2='college_data.sqlite'):
+def test_funcs(db1='test.sqlite'):
     # test the functions from main such as creating tables and adding data to it
-    conn1, cur1 = main.create_connection(db1)
-    conn2, cur2 = main.create_connection(db2)
-    main.create_college_table(cur1)
-    main.create_jobs_table(cur1)
-    main.add_school_data(cur1)
-    main.add_jobs_data(cur1)
-    main.close_db(conn1)
-    main.close_db(conn2)
+    conn, cursor = main.create_connection(db1)
+    main.create_college_table(cursor)
+    main.create_jobs_table(cursor)
+    main.add_school_data(cursor)
+    main.add_jobs_data(cursor)
+    main.close_db(conn)
 
 
 def test_database():
