@@ -13,7 +13,7 @@ def school_data(url: str):
     for page in range(total_pages(url)):
         full_url = f"{url}&api_key={secrets.api_key}&page={page}&fields=school.name,2018.student.size,2017.student.size," \
                    f"school.city,school.state,2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line," \
-                   f"2016.repayment.3_yr_repayment.overall"
+                   f"2016.repayment.3_yr_repayment.overall,2016.repayment.repayment_cohort.3_year_declining_balance"
         response = requests.get(full_url)
         json_data = response.json()
         results = json_data['results']
@@ -22,7 +22,8 @@ def school_data(url: str):
                 [index, data['school.name'], data['school.city'], data['school.state'], data['2018.student.size'],
                  data['2017.student.size'], data["2017.earnings.3_yrs_after_completion."
                                                  "overall_count_over_poverty_line"],
-                 data["2016.repayment.3_yr_repayment.overall"]])
+                 data["2016.repayment.3_yr_repayment.overall"],
+                 data["2016.repayment.repayment_cohort.3_year_declining_balance"]])
             index += 1
         if response.status_code != 200:
             print(response.text)
@@ -62,6 +63,7 @@ def create_college_table(cursor: sqlite3.Cursor):
                         , size_2018 INTEGER
                         , earning_grads INTEGER
                         , grads_repay_3yrs INTEGER
+                        , grads_repay_cohort NUMERIC
                     );
                     '''
     cursor.execute(query1)
@@ -89,8 +91,9 @@ def add_school_data(cursor: sqlite3.Cursor):
     all_data = school_data(url)
     try:
         for data in all_data:
-            cursor.execute('''INSERT INTO college_data(id, name,city,state,size_2019,size_2018,earning_grads,grads_repay_3yrs)
-                        VALUES(?,?,?,?,?,?,?,?)''', data)
+            cursor.execute('''INSERT INTO college_data(id, name,city,state,size_2019,size_2018,earning_grads,
+            grads_repay_3yrs,grads_repay_cohort)
+                        VALUES(?,?,?,?,?,?,?,?,?)''', data)
     except Exception as e:
         print(e)
 
