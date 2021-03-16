@@ -3,7 +3,6 @@ import secrets
 import math
 import sqlite3
 import pandas as pd
-import os
 from typing import Tuple
 
 
@@ -85,7 +84,9 @@ def create_jobs_table(cursor: sqlite3.Cursor):
     cursor.execute(query1)
 
 
-def add_school_data(cursor: sqlite3.Cursor):
+def add_school_data(db='college_data.sqlite'):
+    conn, cursor = create_connection(db)
+    create_college_table(cursor)
     url = 'https://api.data.gov/ed/collegescorecard/v1/schools.json?' \
           'school.degrees_awarded.predominant=2,3'
     all_data = school_data(url)
@@ -96,22 +97,28 @@ def add_school_data(cursor: sqlite3.Cursor):
                         VALUES(?,?,?,?,?,?,?,?,?)''', data)
     except Exception as e:
         print(e)
+    create_state_lookup(cursor)
+    close_db(conn)
 
 
-def add_jobs_data(cursor: sqlite3.Cursor):
-    all_data = jobs_data()
-    try:
-        for data in all_data:
-            cursor.execute('''INSERT INTO jobs_data(job_id, area_title, o_group, occ_title, tot_emp, h_pct25, a_pct25)
-                        VALUES(?,?,?,?,?,?,?)''', data)
-    except Exception as e:
-        print(e)
+def add_jobs_data(db='college_data.sqlite', filename="state_M2019_dl.xlsx"):
+    conn, cursor = create_connection(db)
+    create_jobs_table(cursor)
+    if filename == "":
+        pass
+    else:
+        all_data = jobs_data(filename)
+        try:
+            for data in all_data:
+                cursor.execute('''INSERT INTO jobs_data(job_id, area_title, o_group, occ_title, tot_emp, h_pct25, a_pct25)
+                            VALUES(?,?,?,?,?,?,?)''', data)
+        except Exception as e:
+            print(e)
+    close_db(conn)
 
 
-def jobs_data():
-    this_folder = os.path.dirname(os.path.abspath(__file__))
-    file_to_open = os.path.join(this_folder, "state_M2019_dl.xlsx")
-    wb = pd.read_excel(file_to_open, sheet_name='State_M2019_dl', index_col=0)
+def jobs_data(filename="state_M2019_dl.xlsx"):
+    wb = pd.read_excel(filename, index_col=0)
     df = pd.DataFrame(wb)
     data = df[['occ_code', 'area_title', 'o_group', 'occ_title', 'tot_emp', 'h_pct25', 'a_pct25']].query(
         'o_group == "major"')
@@ -121,13 +128,42 @@ def jobs_data():
     return all_data
 
 
-def main():
+def drop_jobs_data():
     conn, cursor = create_connection('college_data.sqlite')
-    create_college_table(cursor)
     create_jobs_table(cursor)
-    add_school_data(cursor)
-    add_jobs_data(cursor)
+    cursor.execute('''DROP TABLE jobs_data''')
     close_db(conn)
+
+
+def create_state_lookup(cursor: sqlite3.Cursor):
+    query1 = '''
+                    CREATE TABLE IF NOT EXISTS state_lookup (
+                        state_id INTEGER PRIMARY KEY AUTOINCREMENT
+                        , state_name TEXT
+                        , state_abbrev TEXT
+                    );
+                    '''
+    cursor.execute(query1)
+    query1 = '''
+    INSERT INTO state_lookup(state_name, state_abbrev)
+VALUES ('Alabama', 'AL'), ('Alaska', 'AK'), ('Arizona', 'AZ'), ('Arkansas', 'AR'), ('California', 'CA'),
+       ('Colorado', 'CO'), ('Connecticut', 'CT'), ('Delaware', 'DE'), ('District of Columbia', 'DC'),
+       ('Florida', 'FL'), ('Georgia', 'GA'), ('Guam', 'GU'), ('Hawaii', 'HI'), ('Idaho', 'ID'),
+       ('Illinois', 'IL'), ('Indiana', 'IN'), ('Iowa', 'IA'), ('Kansas', 'KS'), ('Kentucky', 'KY'),
+       ('Louisiana', 'LA'), ('Maine', 'ME'), ('Maryland', 'MD'), ('Massachusetts', 'MA'), ('Michigan', 'MI'),
+       ('Minnesota', 'MN'), ('Mississippi', 'MS'), ('Missouri', 'MO'), ('Montana', 'MT'), ('Nebraska', 'NE'), 
+       ('Nevada', 'NV'), ('New Hampshire', 'NH'), ('New Jersey', 'NJ'), ('New Mexico', 'NM'), ('New York', 'NY'),
+       ('North Carolina', 'NC'), ('North Dakota', 'ND'), ('Ohio', 'OH'), ('Oklahoma', 'OK'), ('Oregon', 'OR'),
+       ('Pennsylvania', 'PA'), ('Puerto Rico', 'PR'), ('Rhode Island', 'RI'), ('South Carolina', 'SC'),
+       ('South Dakota', 'SD'), ('Tennessee', 'TN'), ('Texas', 'TX'), ('Utah', 'UT'), ('Vermont', 'VT'),
+       ('Virginia', 'VA'), ('Virgin Islands', 'VI'), ('Washington', 'WA'), ('West Virginia', 'WV'), ('Wisconsin', 'WI'),
+       ('Wyoming', 'WY')'''
+    cursor.execute(query1)
+
+
+def main():
+    add_school_data('college_data.sqlite')
+    add_jobs_data('college_data.sqlite', "state_M2019_dl.xlsx")
 
 
 if __name__ == '__main__':

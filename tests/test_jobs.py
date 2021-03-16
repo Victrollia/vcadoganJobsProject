@@ -11,19 +11,18 @@ def test_num_entries():
     assert result > 1000
 
 
-def test_funcs(db1='test.sqlite'):
+def test_funcs():
     # test the functions from main such as creating tables and adding data to it
-    conn, cursor = main.create_connection(db1)
-    main.create_college_table(cursor)
-    main.create_jobs_table(cursor)
-    main.add_school_data(cursor)
-    main.add_jobs_data(cursor)
-    main.close_db(conn)
+    args = ['college_data.sqlite', 'test.sqlite', "state_M2019_dl.xlsx"]
+    main.add_school_data(args[0])
+    main.add_jobs_data(args[0], args[2])
+    main.add_school_data(args[1])
+    main.add_jobs_data(args[1], args[2])
 
 
 def test_database():
     # test to compare first 5 rows of each table and see if total number of entries match
-    main.main()
+    #main.main()
     sql1 = """SELECT * FROM college_data LIMIT 5;"""
     sql2 = """SELECT * FROM jobs_data LIMIT 5"""
     db1 = 'test.sqlite'
@@ -78,9 +77,19 @@ def exec_sql(filename, table_name):
 
 def test_num_states():
     # test to see if we get entries from all 50 states at least (in my case i also got data from territories)
-    conn = sqlite3.connect('test.sqlite')
-    cursor = conn.cursor()
+    conn, cursor = main.create_connection('test.sqlite')
     cursor.execute("SELECT COUNT(DISTINCT area_title) FROM jobs_data;")
     query = cursor.fetchone()[0]
     conn.close()
     assert query >= 50
+
+
+def test_states():
+    # same as function above but getting entry count from state_lookup table
+    conn, cursor = main.create_connection('test.sqlite')
+    main.create_state_lookup(cursor)
+    cursor.execute("SELECT COUNT(*) FROM state_lookup")
+    query = cursor.fetchone()[0]
+    conn.close()
+    assert query >= 50
+
