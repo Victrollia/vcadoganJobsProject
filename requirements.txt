@@ -18,4 +18,3 @@ virtualenv==20.4.0
 openpyxl
 plotly.express
 PyQt5
-window
