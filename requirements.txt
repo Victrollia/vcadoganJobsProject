@@ -16,7 +16,6 @@ twilio==6.51.1
 urllib3==1.26.3
 virtualenv==20.4.0
 openpyxl
-json
 plotly.express
 plotly.io
 sqlite3
