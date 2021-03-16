@@ -1,6 +1,5 @@
 import main
 import secrets
-import sqlite3
 
 
 def test_num_entries():
@@ -22,7 +21,6 @@ def test_funcs():
 
 def test_database():
     # test to compare first 5 rows of each table and see if total number of entries match
-    #main.main()
     sql1 = """SELECT * FROM college_data LIMIT 5;"""
     sql2 = """SELECT * FROM jobs_data LIMIT 5"""
     db1 = 'test.sqlite'
@@ -92,4 +90,3 @@ def test_states():
     query = cursor.fetchone()[0]
     conn.close()
     assert query >= 50
-

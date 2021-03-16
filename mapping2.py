@@ -16,8 +16,7 @@ def main():
     connection = sqlite3.connect("college_data.sqlite")
     cur = connection.cursor()
     sqlquery = '''SELECT State, round(avg(grads_repay_cohort)*100, 2)||'%' AS 'Declining Balance', 
-    round(AVG(a_pct25),2) AS Wage,
-    CAST(AVG(grads_repay_cohort)*AVG(a_pct25) AS INT) AS Income FROM jobs_data 
+    round(AVG(a_pct25),2) AS Wage, CAST(AVG(grads_repay_cohort)*AVG(a_pct25) AS INT) AS Income FROM jobs_data 
     inner join state_lookup ON jobs_data.area_title = state_lookup.state_name
     inner join college_data ON state_lookup.state_abbrev = college_data.state
     GROUP BY state;'''
@@ -46,7 +45,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
