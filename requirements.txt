@@ -17,7 +17,4 @@ urllib3==1.26.3
 virtualenv==20.4.0
 openpyxl
 plotly.express
-plotly.io
-sqlite3
-os
 PyQt5
