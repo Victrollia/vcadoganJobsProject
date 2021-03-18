@@ -3,52 +3,21 @@
 #### Student: *Victoria Cadogan*
 
 # College Data :mortar_board:
-## COMP490 Project 1 Sprint 1
-
-
-- :computer: Open the project (preferably) in PyCharm
-- :bookmark_tabs: Register for an API key to get government data: https://api.data.gov/signup/
-- :key: Save the key to a file named secrets.py
-- :heavy_check_mark: Add requests library to the project
-- :running: Run main.py
-- :mag: It will be gathering over 3K entries
-- :hourglass: Wait 1~2 minutes to run (running time may vary)
-- :memo: A new text file will be created containing US College Data
-- :pray: For *Sprint 1* nothing I believe is missing
-
-
-## COMP490 Project 1 Sprint 2
+## COMP490 Project 1 Sprint 4
 
 - :bookmark_tabs: Register for an API key to get government data: https://api.data.gov/signup/
 - :key: Save the key to a file named secrets.py
 - :computer: Open the project (preferably) in PyCharm
-- :running: Run main.py
+- :running: Run window.py
 - :mag: It will be gathering over 3K entries
 - :hourglass: Wait 1~2 minutes to run (running time may vary)
 - Once it finished executing, in the project directory a new database with college data will be created.
-- Database layout: one table, 8 columns, 3203 rows
-- Table layout: 
-    - ID (primary key) that also keeps track of the number of entries 
-    - College name 
-    - City of that college 
-    - State of that college
-    - Student size in 2018 
-    - Student size in 2017 
-    - Number of graduates in 2017 working and not enrolled who earned more than 150% of the single-person household poverty threshold 3 years after completing
-    - Number of students in 2016 in the 3-year repayment rate cohort
-
-- :pray: For *Sprint 2* nothing I believe is missing
-
-## COMP490 Project 1 Sprint 3
-
-- :bookmark_tabs: Register for an API key to get government data: https://api.data.gov/signup/
-- :key: Save the key to a file named secrets.py
-- :computer: Open the project (preferably) in PyCharm
-- :running: Run main.py
-- :mag: It will be gathering over 3K entries
-- :hourglass: Wait 1~2 minutes to run (running time may vary)
-- Once it finished executing, in the project directory a new database with college data will be created.
-- Database layout: two tables
+- A new window will be uploaded, user can choose their own excel file or visualise the data from the default excel file in the directory.
+- If the user chooses to import a new excel file, please wait ~1 min to upload the data to the database.
+- Once the buttons are clickable/not frozen, then the data imported successfully. (this is still a bare bones project that could use a loading screen)
+- To visualize the map, click Show Map in the Visualize menu. Once clicked, please wait ~1 min to load the map with data.
+- A browser will open up with the US map. 
+- Database layout: three tables (+1 non essential due to auto increment)
 - Table for College Data layout: 8 columns, 3203 rows 
     - ID (primary key) that also keeps track of the number of entries 
     - College name 
@@ -67,9 +36,17 @@
     - Estimated total employment rounded to the nearest 10 (excludes self-employed).
     - Hourly 25th percentile wage
     - Annual 25th percentile wage
+
+- Table for State Lookup layout: 3 columns, 54 rows
+    - state_id is a primary key (auto-incremented numbers)
+    - state_name is the state full name
+    - state_abbr is the abbreviation of that state
+
 - The tests will assert: 
     - Whether the college count in the US exceeds 1000 entries;
     - The creation of the database from main as well as a test database
     - The comparison of the entries among the two databases
     - Whether any data is null or doesn't match
     - Whether the jobs_data tables gathered entries from all 50 states (at least)
+    - Whether the state_state lookup table returns at least 50 states
+
