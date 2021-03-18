@@ -2,9 +2,9 @@ import os
 import sqlite3
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QPushButton, QLabel, QFileDialog, QDialog, QComboBox, QWidget, QGridLayout, QApplication
 from PyQt5.uic import loadUi
 import mapping as map
 import mapping2 as map2
