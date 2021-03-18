@@ -1,8 +1,4 @@
-import sys
 from window import jobs_window, data_window, start_window
-from PyQt5.QtWidgets import QApplication
-
-app = QApplication(sys.argv)
 
 
 def test_start_window(qtbot):
