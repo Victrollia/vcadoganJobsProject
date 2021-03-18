@@ -99,9 +99,9 @@ class data_window(QDialog):
         FROM college_data GROUP BY state) grads ON state_lookup.state_abbrev = grads.state
         WHERE job_id NOT LIKE '3%'  AND job_id NOT LIKE '4%'
         GROUP BY area_title ORDER BY Rate '''
-        query = '''SELECT State, round(avg(grads_repay_cohort)*100, 2)||'%' AS 'Declining Balance', 
+        query = '''SELECT State, round(avg(grads_repay_cohort)*100, 2)||'%' AS 'Declining Balance',
         round(AVG(a_pct25),2) AS Wage,
-        round(AVG(grads_repay_cohort)*AVG(a_pct25),2) AS Income FROM jobs_data 
+        round(AVG(grads_repay_cohort)*AVG(a_pct25),2) AS Income FROM jobs_data
         inner join state_lookup ON jobs_data.area_title = state_lookup.state_name
         inner join college_data ON state_lookup.state_abbrev = college_data.state
         GROUP BY state ORDER BY Income '''
