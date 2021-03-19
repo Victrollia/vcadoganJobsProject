@@ -13,9 +13,11 @@
 - :hourglass: Wait 1~2 minutes to run (running time may vary)
 - Once it finished executing, in the project directory a new database with college data will be created.
 - A new window will be uploaded, user can choose their own excel file or visualise the data from the default excel file in the directory.
-- If the user chooses to import a new excel file, please wait ~1 min to upload the data to the database.
+- If the user chooses to import a new excel file, please wait ~15 seconds to upload the data to the database.
 - Once the buttons are clickable/not frozen, then the data imported successfully. (this is still a bare bones project that could use a loading screen)
-- To visualize the map, click Show Map in the Visualize menu. Once clicked, please wait ~1 min to load the map with data.
+- Click visualize to view the table data. Please choose one of the two comparison options from the drop down menu. The rightmost column is the key used for sorting.
+- The data will be color coded based on the rightmost column. Red: unsatisfactory, Magenta: poor, Yellow: average, Green: satisfactory, Blue: excellent.
+- To visualize the map, click Show Map in the Visualize menu. Once clicked, please wait ~15 seconds to load the map with data.
 - A browser will open up with the US map. 
 - Database layout: three tables (+1 non essential due to auto increment)
 - Table for College Data layout: 8 columns, 3203 rows 
